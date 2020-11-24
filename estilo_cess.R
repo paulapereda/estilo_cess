@@ -23,7 +23,11 @@ estilo_cess <- function() {
                                     family = "Gotham-Bold"),
           plot.subtitle = element_text(hjust = .5),
           plot.caption = element_text(family = "Gotham-Light", hjust = 1, 
-                                      margin = margin(t = 10)))
+                                      margin = margin(t = 10)),
+          panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
+          axis.line.x = element_line(),
+          axis.ticks.x = element_line())
 }
 
 coloriza_sexo <- function(vector) {
