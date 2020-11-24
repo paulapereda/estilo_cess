@@ -1,6 +1,7 @@
 library(lubridate)
 library(tidyverse)
 library(scales)
+
 source(here::here("estilo_cess.R"))
 
 # Gráfico 1 - Brecha de género en la tasa de actividad
@@ -62,14 +63,15 @@ ta_todos %>%
              color = "grey35", size = .7) +
   annotate("text", 
            x = 10, 
-           y = 19.5, 
+           y = 20, 
+           size = 5,
            label = glue::glue("Media: {round(mean(ta_todos$brecha_na), 2)}%")) +
   labs(y = "Brecha de género en la tasa de actividad (%)",
        x = "",
        caption = "Fuente: Organización Internacional del Trabajo",
        title = "Gráfico 1 - Brecha de género en el mundo") +
   theme(legend.position = "none") +
-  ggsave(here::here("Notas Técnicas", "02_PEA", "plots", "ta_todos.png"), dpi = 300, width = 9, height = 7.8)
+  ggsave(here::here("Notas Técnicas", "02_PEA", "plots", "ta_todos.png"), dpi = 300, width = 10, height = 10)
 
 # Gráfico 2 - Cierre de brecha proyectada a 2100
 
@@ -105,13 +107,14 @@ brecha %>%
   scale_x_continuous(breaks = c(1990, 2000, 2010, 2020, 2030, 2040, 2050, 
                                 2060, 2070, 2080, 2090, 2100)) +
   geom_text(data = brecha_labels, 
-            nudge_y = .6e-2,
+            size = 5,
+            nudge_y = .75e-2,
             aes(label = scales::percent_format(scale = 100, accuracy = .1)(brecha))) + 
   labs(y = "",
        x = "Año",
        caption = "Fuente: elaboración propia con base en Organización Internacional del Trabajo", 
        title = "Gráfico 2 - Cierre de brecha proyectada a 2100") +
-  ggsave(here::here("Notas Técnicas", "02_PEA", "plots", "brecha_proyectada.png"), dpi = 300, width = 8.5, height = 7)
+  ggsave(here::here("Notas Técnicas", "02_PEA", "plots", "brecha_proyectada.png"), dpi = 300, width = 10, height = 7)
 
 # Gráfico 3
 
@@ -135,10 +138,10 @@ pea_proyectada %>%
                      labels = c("0", "500.000", "1.000.000", "1.500.000")) +
   scale_x_continuous(breaks = c(1990, 2000, 2010, 2020, 2030, 2040, 2050, 
                                 2060, 2070, 2080, 2090, 2100)) +
-  annotate("text", x = 2100, y = 1270000, label = "1.301.961") +
+  annotate("text", x = 2100, y = 1270000, label = "1.301.961", size = 5) +
   labs(x = "Año",
        y = "Población Económicamente Activa",
        caption = "Fuente: elaboración propia con base en Organización Internacional del Trabajo",
        title = "Gráfico 3 - Población Económicamente Activa proyectada a 2100") + 
   guides(linetype = FALSE) +
-  ggsave(here::here("Notas Técnicas", "02_PEA", "plots", "pea_proyectada.png"), dpi = 300, width = 8.5, height = 7)
+  ggsave(here::here("Notas Técnicas", "02_PEA", "plots", "pea_proyectada.png"), dpi = 300, width = 11, height = 7)

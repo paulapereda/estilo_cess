@@ -15,7 +15,7 @@ gris_cess <- "#808285"
 
 estilo_cess <- function() {
   theme_minimal(base_family = "Gotham-Book",
-                base_size = 12) +
+                base_size = 16) +
     theme(axis.line = ggplot2::element_blank(), 
           panel.grid.minor = ggplot2::element_blank(), 
           panel.background = ggplot2::element_blank(), 
