@@ -27,7 +27,8 @@ estilo_cess <- function() {
           panel.grid.major.x = element_blank(),
           panel.grid.minor.x = element_blank(),
           axis.line.x = element_line(),
-          axis.ticks.x = element_line())
+          axis.ticks.x = element_line(),
+          legend.position = "bottom")
 }
 
 coloriza_sexo <- function(vector) {
