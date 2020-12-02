@@ -8,4 +8,4 @@ Tema de ggplot2 para la Comisión de Expertos en Seguridad Social (y los gráfic
 
 ## Nota Técnica 3 - Gasto en pensiones de sobrevivencia (referente: Ariel Cancio)
 
-## Nota Técnica 4 - Tablas de mortalidad específicas de BPS (referente: Mariela Lazo)
+## Nota Técnica 4 - Tablas de mortalidad específicas de BPS (referente: Mariella Lazo)
