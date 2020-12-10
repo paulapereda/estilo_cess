@@ -119,15 +119,21 @@ brecha %>%
 
 # Gráfico 3
 
-pea_proyectada <- df %>% 
-  select(- rojos) %>% 
-  group_by(`Año` = year) %>% 
-  summarize(PEA = round(sum(pea)),
-            PET = round(sum(pob))) %>% 
-  mutate(anio = as.numeric(year(`Año`))) %>% 
-  mutate(proyeccion = year(`Año`) >= 2020) %>% 
-  add_row(`Año` = as.Date("2020-01-01"), PEA = 1774834, PET = 2767343, anio = 2020, proyeccion = FALSE)
+# pea_proyectada <- df %>% 
+#   select(- rojos) %>% 
+#   group_by(`Año` = year) %>% 
+#   summarize(PEA = round(sum(pea)),
+#             PET = round(sum(pob))) %>% 
+#   mutate(anio = as.numeric(year(`Año`))) %>% 
+#   mutate(proyeccion = year(`Año`) >= 2020) %>% 
+#   add_row(`Año` = as.Date("2020-01-01"), PEA = 1774834, PET = 2767343, anio = 2020, proyeccion = FALSE)
 
+pea_proyectada <- readxl::read_excel("Notas Técnicas/02_PEA/proyeccion_pea_total.xlsx") %>% 
+  select(- PET) %>% 
+  mutate(anio = as.numeric(year(`Año`))) %>%
+  mutate(proyeccion = year(`Año`) >= 2020) %>%
+  add_row(`Año` = as.Date("2020-01-01"), PEA = 1774834, anio = 2020, proyeccion = FALSE)
+  
 # PEA Total
 
 pea_labels <- filter(pea_proyectada, anio == 2100)
@@ -141,7 +147,7 @@ pea_proyectada %>%
                      labels = c("0", "500.000", "1.000.000", "1.500.000", "2.000.000")) +
   scale_x_continuous(breaks = c(1990, 2000, 2010, 2020, 2030, 2040, 2050, 
                                 2060, 2070, 2080, 2090, 2100)) +
-  annotate("text", x = 2100, y = 1270000, label = "1.301.961", size = 5) +
+  annotate("text", x = 2100, y = 1270000, label = "1.343.991", size = 5) +
   labs(x = "",
        y = "",
        caption = "Fuente: elaboración propia con base en Organización Internacional del Trabajo",
