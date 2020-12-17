@@ -8,9 +8,12 @@ library(ggplot2)
 # fonttable()
 
 amarillo_cess <- "#FBB040"
+amarillo_cess2 <- "#FDCE87"
 violeta_cess <- "#A183BC"
+violeta_cess2 <- "#CDBDDB"
 rosado_cess <- "#EC878D"
 verde_cess <- "#7FC371"
+verde_cess2 <- "#BEE1B7"
 gris_cess <- "#808285" 
 
 estilo_cess <- function() {
