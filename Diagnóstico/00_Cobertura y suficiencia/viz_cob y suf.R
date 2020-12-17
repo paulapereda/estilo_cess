@@ -5,7 +5,7 @@ library(here)
 
 source(here::here("estilo_cess.R"))
 
-## Tasa bruta reemplazo 
+# Gráfico 1 - Tasa bruta reemplazo 
 
 g1 <- read_excel(here("Diagnóstico", "00_Cobertura y suficiencia", "gross replacement rates.xlsx")) %>%
   filter(LOCATION == "OAVG" | LOCATION == "NOR" | LOCATION == "DNK" | LOCATION == "PRT" |
@@ -40,17 +40,12 @@ ggplot(g1, aes(reorder(Pais, Tasa), Tasa, fill = distincion)) +
   guides(fill = FALSE) +
   labs(x = "",
        y = "",
-       title = "Tasa bruta de reemplazo en los países de la OCDE",
+       title = "Tasa bruta de reemplazo en los países de la OCDE (2018)",
        caption = "Fuente: elaboración propia con base en OCDE") + 
   ggsave(here("Diagnóstico", "00_Cobertura y suficiencia", "plots", "graf1.png"), 
-         dpi = 300, width = 10, height = 7)
+         dpi = 300, width = 12, height = 7)
 
-
-## Tasa cobertura activa LATAM, ESTRE GRAFICO TBIEN QUEDA FALTA OBVIAMENTE EMPROLIJAR
-## TAMBIEN SE LE SACAN LAS LABELS
-## TAMBIEN SE ORDENARIA POR EJEMPLO EN BASE A ALGUN AÑO EN EL QUE HAYA INFO PARA TODOS LOS PAISES
-## EL TITULO SERIA TASA DE COBERTURA (Ocupados cotizantes a la seguridad social (en % de la población ocupada))
-## FUENTE ELABORACION PROPIA CON DATOS BID SIMS
+# Gráfico 2 - Tasa de cobertura activa (Latinoamérica)
 
 g2 <- read_excel(here("Diagnóstico", "00_Cobertura y suficiencia", "ocupados.xlsx")) %>% 
   transmute(Países = case_when(
@@ -87,15 +82,10 @@ ggplot(g2, aes(reorder(Países, value), value)) +
   ggsave(here("Diagnóstico", "00_Cobertura y suficiencia", "plots", "graf2.png"), 
          dpi = 300, width = 12, height = 8)
 
-
-## Tasa cobertura pasiva LATAM ##
-##TAMBIEN LES SACAMOS LAS LABELS X, Y
-## TAMBIEN SE ORDENARIA 
-## EL TITULO SERIA TASA DE COBERTURA PASIVA en 2018(Personas de 65 o más años que declaran un monto recibido por pensión contributiva/ no contributiva (en %))
-## FUENTE ELABORACION PROPIA CON DATOS BID SIMS
+# Gráfico 3 - 
 
 g3 <- read_excel(here("Diagnóstico", "00_Cobertura y suficiencia", "Cobertura pensiones.xlsx")) %>%
-  filter(Año == 2018) %>%
+  filter(Año == 2018 | (Año == 2017 & Pais == "CHI")) %>%
   transmute(Pais = case_when(
                           Pais == "ARG" ~ "Argentina",
                           Pais == "BOL" ~ "Bolivia",
@@ -123,7 +113,7 @@ ggplot(g3, aes(Pais, tasa, fill = Pensión)) +
   coord_flip() +
   scale_fill_manual(values = c(verde_cess, violeta_cess)) +
   scale_y_continuous(limits = c(0, 100),
-                     expand = expansion(mult = c(0, 0))) +
+                     expand = expansion(mult = c(0, 0.02))) +
   labs(x = "",
        y = "",
        fill = "",
@@ -131,14 +121,8 @@ ggplot(g3, aes(Pais, tasa, fill = Pensión)) +
        subtitle = "Personas de 65 o más años que declaran un monto recibido por pensión \ncontributiva/no contributiva (en %)",
        caption = "Fuente: elaboración propia con base en SIMS-BID") +
   ggsave(here("Diagnóstico", "00_Cobertura y suficiencia", "plots", "graf3.png"),
-         dpi = 300, width = 12, height = 8)
+         dpi = 300, width = 11, height = 8)
 
-
-## Tasa informalidad EU ##
-## titulo sería Tasa de Informalidad en Países Desarrollados
-## FUente: Elaboración propia datos OIT
-## sacamos las labels
-## falta emprolijar ejes
 
 g4 <- read_excel(here("Diagnóstico", "00_Cobertura y suficiencia", "informalidad europa.xlsx")) %>% 
   mutate(Pais = case_when(
@@ -160,3 +144,77 @@ ggplot(g4, aes(reorder(Pais, tasa), tasa)) +
          dpi = 300, width = 10, height = 7)
 
 
+# Gráfico 5
+
+g5 <- read_excel(here("Diagnóstico", "00_Cobertura y suficiencia", "Cobertura y suficiencia.xlsx"), 
+                 sheet = "g5") %>% 
+  mutate(label = paste0(round(`Cobertura efectiva`*100, 1), "%", sep = " "))
+
+g5_labels <- filter(g5, Año == 2018)
+
+ggplot(g5, aes(as.factor(Año), `Cobertura efectiva`)) +
+  geom_bar(stat = "identity", width = .4, fill  = verde_cess) + 
+  geom_text(data = g5_labels,
+            aes(label = label), vjust = - .5, size = 5) +
+  scale_y_continuous(expand = expansion(mult = c(0, .05)),
+                     limits = c(0, 0.85),
+                     labels = c(0, 20, 40, 60, 80)) +
+  labs(x = "",
+       y = "",
+       title = "Cobertura activa del Sistema de Seguridad Social",
+       subtitle = "(Cotizantes/PEA)",
+       caption = "Fuente: elaboración propia con base en BPS") + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1.2)) +
+  ggsave(here("Diagnóstico", "00_Cobertura y suficiencia", "plots", "graf5.png"), 
+         dpi = 300, width = 12, height = 7)
+
+# Gráfico 6
+
+g6 <- read_excel(here("Diagnóstico", "00_Cobertura y suficiencia", "Cobertura y suficiencia.xlsx"), 
+                 sheet = "g6") %>%
+  pivot_longer(- Año, names_to = "tipo_pasividad", values_to = "value") %>% 
+  mutate(label = paste0(round(value*100, 1), "%", sep = " "))
+
+g6_labels <- filter(g6, Año %in% c(2004, 2018))
+
+ggplot(g6, aes(as.factor(Año), value, fill = tipo_pasividad)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_manual(values = c(verde_cess, amarillo_cess, rosado_cess)) +
+  geom_text(data = g6_labels,
+            aes(label = label,
+                fontface = 2), 
+            position = position_stack(.5),
+          size = 5) +
+  scale_y_continuous(expand = expansion(mult = c(0, .05)),
+                     labels = c("", "", "", "", "")) +
+  labs(x = "",
+       y = "",
+       fill = "",
+       title = "Cobertura del Sistema de Seguridad Social",
+       subtitle = "Población de 65 años y más",
+       caption = "Fuente: elaboración propia con base en BPS") + 
+  ggsave(here("Diagnóstico", "00_Cobertura y suficiencia", "plots", "graf6.png"), 
+         dpi = 300, width = 12, height = 7)
+
+# Gráfico 7
+
+g7 <- read_excel(here("Diagnóstico", "00_Cobertura y suficiencia", "Cobertura y suficiencia.xlsx"), 
+                 sheet = "g7") %>%
+  pivot_longer(- Año, names_to = "grupo_etario", values_to = "value") %>% 
+  mutate(grupo_etario = factor(grupo_etario, levels = c("Menos de 6", "65 y más", "Total")))
+
+
+ggplot(g7, aes(as.factor(Año), value, color = grupo_etario, group = grupo_etario)) +
+  geom_line(size = 1.5) +
+  scale_color_manual(values = c(verde_cess, amarillo_cess, rosado_cess)) +
+  scale_y_continuous(limits = c(0, 60), 
+                     breaks = c(0, 10, 20, 30, 40, 50, 60),
+                     expand = expansion(mult = c(0, .05))) +
+  labs(x = "",
+       y = "",
+       color = "",
+       title = "Pobreza en personas por grupos de edades",
+       subtitle = "Total país, en porcentaje",
+       caption = "Fuente: elaboración propia con base en INE") + 
+  ggsave(here("Diagnóstico", "00_Cobertura y suficiencia", "plots", "graf7.png"), 
+         dpi = 300, width = 12, height = 7)
