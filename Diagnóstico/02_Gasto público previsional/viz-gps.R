@@ -32,7 +32,7 @@ ggplot(g1, aes(anio, value_aux, color = caja, group = caja)) +
        y = "", 
        color = "",
        title = "Gasto en pasividades", 
-       subtitle = "$ contantes 2019") +
+       subtitle = "$ constantes 2019") +
   ggsave(here("Diagnóstico", "02_Gasto público previsional", "plots", "graf1.png"), 
          dpi = 300, width = 12, height = 7)
 
