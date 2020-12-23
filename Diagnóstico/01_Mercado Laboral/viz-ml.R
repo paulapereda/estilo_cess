@@ -12,11 +12,11 @@ g1 <- read_excel(here("Diagnóstico", "01_Mercado Laboral", "Graficos_cap1.xlsx"
   pivot_longer(- anio, names_to = "tasa_actividad", values_to = "value") %>% 
   mutate(tasa_actividad = factor(tasa_actividad, levels = c("Hombres", "Mujeres", "Global")))
 
-ggplot(g1, aes(anio, value, color = tasa_actividad, group = tasa_actividad)) +
+ggplot(g1, aes(as.numeric(anio), value, color = tasa_actividad, group = tasa_actividad)) +
   geom_line(size = 1.5) +
   scale_color_manual(values = c(verde_cess, violeta_cess, amarillo_cess)) +
   scale_x_continuous(breaks = seq(1980, 2020, by = 5)) +
-  scale_y_continuous(limits = c(0, .8),
+  scale_y_continuous(limits = c(.3, .8),
                      expand = expansion(mult = c(0, NA)),
                      labels = scales::percent_format(accuracy = 1)) +
   labs(x = "",
@@ -56,8 +56,8 @@ ggplot(g3, aes(anio, value, color = tramo_edad, group = tramo_edad)) +
   geom_line(size = 1.5) +
   scale_color_manual(values = c(verde_cess, rosado_cess, amarillo_cess)) +
   scale_x_continuous(breaks = seq(1980, 2020, by = 5)) +
-  scale_y_continuous(limits = c(0, .9),
-                     breaks = seq(0, .9, by = .1),
+  scale_y_continuous(limits = c(.3, .9),
+                     breaks = seq(.3, .9, by = .1),
                      expand = expansion(mult = c(0, .01)),
                      labels = scales::percent_format(accuracy = 1)) +
   theme(panel.spacing = unit(2, "lines")) +
@@ -68,7 +68,7 @@ ggplot(g3, aes(anio, value, color = tramo_edad, group = tramo_edad)) +
   ggsave(here("Diagnóstico", "01_Mercado Laboral", "plots", "graf3.png"), 
          dpi = 300, width = 11, height = 6)
 
-# Gráfico 4 - Tasa de actividad por sexo
+# Gráfico 4 - Tasa de empleo por sexo
 
 g4 <- read_excel(here("Diagnóstico", "01_Mercado Laboral", "Graficos_cap1.xlsx"), sheet = "g4") %>% 
   pivot_longer(- anio, names_to = "tasa_empleo", values_to = "value") %>% 
@@ -78,8 +78,8 @@ ggplot(g4, aes(anio, value, color = tasa_empleo, group = tasa_empleo)) +
   geom_line(size = 1.5) +
   scale_color_manual(values = c(verde_cess, violeta_cess, amarillo_cess)) +
   scale_x_continuous(breaks = seq(1980, 2020, by = 5)) +
-  scale_y_continuous(limits = c(0, .75),
-                     breaks = seq(0, .75, by = .1),
+  scale_y_continuous(limits = c(.3, .75),
+                     breaks = seq(.3, .75, by = .1),
                      expand = expansion(mult = c(0, NA)),
                      labels = scales::percent_format(accuracy = 1)) +
   labs(x = "",
@@ -98,8 +98,8 @@ ggplot(g5, aes(anio, value, color = tramo_edad, group = tramo_edad)) +
   geom_line(size = 1.5) +
   scale_color_manual(values = c(verde_cess, rosado_cess, amarillo_cess)) +
   scale_x_continuous(breaks = seq(1980, 2020, by = 5)) +
-  scale_y_continuous(limits = c(0, .85),
-                     breaks = seq(0, .85, by = .1),
+  scale_y_continuous(limits = c(.2, .85),
+                     breaks = seq(.2, .85, by = .1),
                      expand = expansion(mult = c(0, .01)),
                      labels = scales::percent_format(accuracy = 1)) +
   labs(x = "",
@@ -116,8 +116,8 @@ g6 <- read_excel(here("Diagnóstico", "01_Mercado Laboral", "Graficos_cap1.xlsx"
 ggplot(g6, aes(anio, valor)) +
   geom_line(size = 1.5, color = verde_cess) +
   scale_x_continuous(breaks = seq(1998, 2018, by = 2)) +
-  scale_y_continuous(limits = c(0, 1500000),
-                     breaks = seq(0, 1500000, by = 200000),
+  scale_y_continuous(limits = c(800000, 1500000),
+                     breaks = seq(800000, 1500000, by = 200000),
                      expand = expansion(mult = c(0, .01)),
                      labels = function(x) format(x, big.mark = ".", scientific = FALSE)) +
   labs(x = "",
@@ -292,7 +292,9 @@ brecha %>%
   geom_line(color = verde_cess, size = 1.5) + 
   geom_point(data = brecha_labels, color = verde_cess, size = 1.7) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.08)),
-                     limits = c(0, 0.35), labels = scales::percent_format(accuracy = 1)) + 
+                     limits = c(0.08, 0.32), 
+                     breaks = seq(0.08, 0.32, by = 0.04),
+                     labels = scales::percent_format(accuracy = 1)) + 
   scale_x_continuous(breaks = c(1990, 2000, 2010, 2020, 2030, 2040, 2050, 
                                 2060, 2070, 2080, 2090, 2100)) +
   geom_text(data = brecha_labels, 
@@ -322,12 +324,12 @@ pea_proyectada %>%
   ggplot(aes(anio, PEA)) +
   geom_line(aes(linetype = proyeccion), color = verde_cess, size = 1.5) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.08)),
-                     limits = c(0, 1900000),
-                     breaks = c(0, 500000, 1000000, 1500000, 2000000),
-                     labels = c("0", "500.000", "1.000.000", "1.500.000", "2.000.000")) +
+                     limits = c(1000000, 2000000), 
+                     breaks = seq(1000000, 2000000, by = 250000),
+                     labels = function(x) format(x, big.mark = ".", scientific = FALSE)) +
   scale_x_continuous(breaks = c(1990, 2000, 2010, 2020, 2030, 2040, 2050, 
                                 2060, 2070, 2080, 2090, 2100)) +
-  annotate("text", x = 2100, y = 1270000, label = "1.343.991", size = 5) +
+  annotate("text", x = 2100, y = 1320000, label = "1.343.991", size = 5) +
   labs(x = "",
        y = "",
        caption = "Fuente: elaboración propia con base en Organización Internacional del Trabajo",

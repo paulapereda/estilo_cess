@@ -7,13 +7,16 @@ library(here)
 source(here::here("estilo_cess.R"))
 
 g1 <- read_excel(here("Diagnóstico", "03_Tasas de Aportación", "Tasa de aporte.xlsx")) %>% 
-  mutate(`Tasa de contribución obligatoria` = round(`Tasa de contribución obligatoria`))
+  mutate(`Tasa de contribución obligatoria` = round(`Tasa de contribución obligatoria`),
+         distinction = ifelse(País == "Uruguay (CD)" | País == "Uruguay", T, F))
 
-ggplot(g1, aes(reorder(País, `Tasa de contribución obligatoria`), `Tasa de contribución obligatoria`)) +
-  geom_bar(stat = "identity", fill = verde_cess) +
+ggplot(g1, aes(reorder(País, `Tasa de contribución obligatoria`), `Tasa de contribución obligatoria`,
+               fill = distinction)) +
+  geom_bar(stat = "identity") +
   geom_text(aes(label = `Tasa de contribución obligatoria`), 
             size = 5,
             position = position_stack(vjust = 0.25)) +
+  scale_fill_manual(values = c(verde_cess, amarillo_cess)) +
   scale_y_continuous(limits = c(0, 35),
                      breaks = seq(0, 35, by = 5),
                      labels = c("0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%"),
@@ -22,6 +25,7 @@ ggplot(g1, aes(reorder(País, `Tasa de contribución obligatoria`), `Tasa de con
   annotate("text", label = "Promedio Latinoamérica = 11,4%", x = 3, y = 12, hjust = 0) + 
   geom_hline(yintercept = 18.4) + 
   annotate("text", label = "Promedio ODCE = 18,4%", x = 3, y = 19, hjust = 0) + 
+  guides(fill = FALSE) +
   labs(x = "",
        y = "", 
        title = "Tasa de contribución obligatoria",
