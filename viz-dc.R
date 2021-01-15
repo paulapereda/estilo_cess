@@ -6,7 +6,7 @@ library(here)
 
 source(here("estilo_cess.R"))
 
-# Gráfico 1 - 
+# Gráfico 1 - Edad de inicio laboral formal desde 2005
 
 g1 <- read_excel("Notas Técnicas/04_Densidad de cotización/Gráficas densidad.xlsx", 
                  range = "A1:B16") 
@@ -34,7 +34,7 @@ g1 %>%
   ggsave(here("Notas Técnicas", "04_Densidad de cotización", "plots", "graf1.png"),
          dpi = 300, width = 10, height = 7)
 
-# Gráfico 2 - 
+# Gráfico 2 - Densidad promedio de cotizantes de 2019
 
 g2 <- read_excel("Notas Técnicas/04_Densidad de cotización/Gráficas densidad.xlsx", 
                  sheet = "Gráfica 2",
@@ -61,7 +61,7 @@ g2 %>%
   ggsave(here("Notas Técnicas", "04_Densidad de cotización", "plots", "graf2.png"),
          dpi = 300, width = 10, height = 7)
 
-# Gráfico 3 - 
+# Gráfico 3 - Densidad promedio desde 04/96
 
 g3 <- read_excel("Notas Técnicas/04_Densidad de cotización/Gráficas densidad.xlsx", 
                  sheet = "Gráfica 3",
@@ -98,7 +98,7 @@ g3 %>%
   ggsave(here("Notas Técnicas", "04_Densidad de cotización", "plots", "graf3.png"),
          dpi = 300, width = 10, height = 7)
 
-# Gráfico 4 -
+# Gráfico 4 - Densidad promedio de cotizantes de 2019 por edad y sexo
 
 g4 <- read_excel("Notas Técnicas/04_Densidad de cotización/Gráficas densidad.xlsx", 
                  sheet = "Gráfica 4",
@@ -121,7 +121,7 @@ g4 %>%
   ggsave(here("Notas Técnicas", "04_Densidad de cotización", "plots", "graf4.png"),
          dpi = 300, width = 10.5, height = 7)
 
-# Gráfico 5 -
+# Gráfico 5 - Densidad promedio de cotizantes de 2019 por edad y quintil
 
 g5 <- read_excel("Notas Técnicas/04_Densidad de cotización/Gráficas densidad.xlsx", 
                  sheet = "Gráfica 5",
@@ -148,7 +148,7 @@ g5 %>%
   ggsave(here("Notas Técnicas", "04_Densidad de cotización", "plots", "graf5.png"),
          dpi = 300, width = 11, height = 7)
 
-# Gráfico 6 
+# Gráfico 6 - Densidad promedio desde los 20 años 
 
 g6 <- read_excel("Notas Técnicas/04_Densidad de cotización/Gráficas densidad.xlsx", 
                  sheet = "Gráfica 6",
@@ -171,7 +171,7 @@ g6 %>%
   ggsave(here("Notas Técnicas", "04_Densidad de cotización", "plots", "graf6.png"),
          dpi = 300, width = 10.5, height = 7)
 
-# Gráfico 7 - 
+# Gráfico 7 - Densidad promedio según período considerado
   
 g7 <- read_excel("Notas Técnicas/04_Densidad de cotización/Gráficas densidad.xlsx", 
                  sheet = "Gráfica 7",
@@ -204,7 +204,7 @@ g7 %>%
   ggsave(here("Notas Técnicas", "04_Densidad de cotización", "plots", "graf7.png"),
          dpi = 300, width = 10.5, height = 7)
 
-# Gráfico 8
+# Gráfico 8 - Densidad promedio por sexo
 
 g8 <- read_excel("Notas Técnicas/04_Densidad de cotización/Gráficas densidad.xlsx", 
                  sheet = "Gráfica 8",
@@ -231,7 +231,7 @@ g8 %>%
   labs(x = "Edad al 31/12/2019", 
        y = "Densidad de cotización", 
        color = "",
-       title = "Gráfico 7 - Densidad promedio por sexo", 
+       title = "Gráfico 8 - Densidad promedio por sexo", 
        subtitle = "Edades 45 a 70 a 12/2019",
        subtile = "Edades 45 a 70 a 12/2019",
        caption = "Fuente: elaboración propia en base a datos de historia laboral de BPS") +
