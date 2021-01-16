@@ -6,6 +6,31 @@ library(here)
 
 source(here::here("estilo_cess.R"))
 
+# Gráfico - automatización
+
+g <- read_excel(here("Diagnóstico", "01_Mercado Laboral", "SectoresAutoat.xlsx"))
+
+# Gráfico 0 - Informalidad según sexo
+
+g0 <- read_excel(here("Diagnóstico", "01_Mercado Laboral", "Informalidad CESS.xlsx"), 
+                 sheet = "Sheet1") %>% 
+  mutate(valor = valor/100)
+
+g0 %>% 
+  ggplot(aes(anio, valor, color = sexo)) +
+  geom_line(size = 1.5) +
+  scale_color_manual(values = c(verde_cess, violeta_cess, amarillo_cess)) +
+  scale_x_continuous(breaks = seq(2006, 2018, by = 1)) +
+  scale_y_continuous(limits = c(.2, .4),
+                     expand = expansion(mult = c(0, NA)),
+                     labels = scales::percent_format(accuracy = 1)) +
+  labs(x = "",
+       y = "", 
+       color = "",
+       title = "Tasa de informalidad por sexo") +
+  ggsave(here("Diagnóstico", "01_Mercado Laboral", "plots", "graf0.png"), 
+         dpi = 300, width = 12, height = 7)
+
 # Gráfico 1 - Tasa de actividad por sexo
 
 g1 <- read_excel(here("Diagnóstico", "01_Mercado Laboral", "Graficos_cap1.xlsx"), sheet = "g1") %>% 

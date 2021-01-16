@@ -7,6 +7,51 @@ library(here)
 
 source(here::here("estilo_cess.R"))
 
+# Gráfico 0 - Pirámide de población - años
+
+g0 <- read_excel(here("Diagnóstico", "04_Demografía", "Piramides_1908_2100.xlsx"),
+                 sheet = "Sheet1") %>%
+  mutate(valor = abs(valor),
+         valor = ifelse(sexo == "Mujeres", valor*-1, valor),
+         grupo = factor(grupo, levels = c("0-4",
+                                          "5-9",
+                                          "10-14",
+                                          "15-19",
+                                          "20-24",
+                                          "25-29",
+                                          "30-34",
+                                          "35-39",
+                                          "40-44",
+                                          "45-49",
+                                          "50-54",
+                                          "55-59",
+                                          "60-64",
+                                          "65-69",
+                                          "70-74",
+                                          "75-79",
+                                          "80+")))  
+
+ggplot(g0, aes(grupo, valor)) +
+  geom_col(aes(fill = sexo)) +
+  coord_flip() +
+  scale_fill_manual(values = c(verde_cess, violeta_cess), 
+                    name = "") +
+  scale_y_continuous(expand = expansion(add = c(1, 1)),
+                     breaks = c(-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6)) +
+  facet_wrap(~ anio, nrow = 2) +
+  labs(x = "",
+       y = "",
+       caption = "Fuente: elaboración propia",
+       title = "Evolución de la estructura de edades en Uruguay (1908 - 2020)") + 
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        axis.line.x = element_line(),
+        axis.ticks.x = element_line(),
+        legend.position = "bottom") +
+  ggsave(here("Diagnóstico", "04_Demografía", "plots", "graf0.png"), 
+         dpi = 300, width = 11, height = 8)
+
+
 # Gráfico 1 - Evolución de la estructura en Uruguay (1970 - 2015)
 
 g1 <- read_excel("Notas Técnicas/01_Población/insumos graficos Nota tecnica 1.xlsx", 
@@ -25,7 +70,7 @@ nacimiento_labels <- filter(g1 %>% filter(variable == "Nacimientos"),
 (nacimientos <- g1 %>% 
     filter(variable == "Nacimientos") %>% 
     ggplot(aes(anio, valor)) +
-    geom_line(color = verde_cess, size = 1.1) +
+    geom_line(color = verde_cess, size = 1.5) +
     geom_point(data = nacimiento_labels, color = verde_cess, size = 2) +
     scale_x_continuous(breaks = c(1996, 1999, 2002, 2005, 2008, 2011, 2014, 2017, 2020),
                        expand = expansion(mult = c(0.04, 0.06))) +
@@ -53,7 +98,7 @@ tgf_labels <- filter(g1 %>% filter(variable == "TGF"),
     filter(variable == "TGF") %>% 
     ggplot(aes(anio, valor)) +
     geom_point(data = tgf_labels, color = verde_cess, size = 2) +
-    geom_line(color = verde_cess, size = 1.1) +
+    geom_line(color = verde_cess, size = 1.5) +
     scale_x_continuous(breaks = c(1996, 1999, 2002, 2005, 2008, 2011, 2014, 2017, 2020),
                        expand = expansion(mult = c(0.03, 0.06))) +
     scale_y_continuous(expand = expansion(mult = c(0, 0.08)),
@@ -85,13 +130,13 @@ ggsave(here("Diagnóstico", "04_Demografía", "plots", "graf1.png"),
 
 g2 <- read_excel(here("Diagnóstico", "04_Demografía", "Book1.xlsx"), sheet = "g2") %>% 
   pivot_longer(-anios, names_to = "edad", values_to = "value") %>% 
-  mutate(edad = factor(edad, levels = c("Menores 15", "15-64", "65+")))
+  mutate(edad = factor(edad, levels = c("Menores 15", "15-64", "65+"),
+                       labels = c("Menores de 15", "15-64", "65+")))
 
 ggplot(g2, aes(anios, value, fill = edad)) +
   geom_area() +
   scale_fill_manual(values = c(violeta_cess, verde_cess, rosado_cess)) +
-  scale_x_continuous(breaks = seq(1970, 2020, by = 10),
-                     expand = expansion(mult = c(0, 0))) +
+  scale_x_continuous(breaks = seq(1970, 2020, by = 10)) +
   scale_y_continuous(limits = c(0, 4000000),
                      breaks = seq(0, 4000000, by = 1000000),
                      expand = expansion(mult = c(0, .01)),
@@ -102,7 +147,7 @@ ggplot(g2, aes(anios, value, fill = edad)) +
        title = "Población total por grupo de edad",
        caption = "Fuente: Naciones Unidas (2019), World Population Prospects.") +
   ggsave(here("Diagnóstico", "04_Demografía", "plots", "graf2.png"), 
-         dpi = 300, width = 12, height = 7)
+         dpi = 300, width = 13, height = 7)
 
 # Gráfico 3 - Nacimientos y Tasa Global de Fecundidad
 
@@ -116,11 +161,14 @@ g <- read_excel(here("Diagnóstico", "04_Demografía", "Book1.xlsx"), sheet = "g
   pivot_longer(-anio, names_to = "grupo", values_to = "value") %>% 
   mutate(grupo = factor(grupo, levels = c("Relación de dependencia - total", 
                                           "Relación de dependencia - niñez",
-                                          "Relación de dependencia - vejez")))
+                                          "Relación de dependencia - vejez"),
+                        labels =  c("Total", 
+                                    "Niñez",
+                                    "Vejez")))
 
 
 ggplot(g, aes(anio, value, color = grupo, group = grupo)) +
-  geom_line(size = 1.2) + 
+  geom_line(size = 1.5) + 
   scale_color_manual(values = c(violeta_cess, verde_cess, rosado_cess)) +
   scale_y_continuous(limits = c(0, 1),
                      expand = expansion(mult = c(0, 0))) +
@@ -139,7 +187,7 @@ g4 <- read_excel(here("Diagnóstico", "04_Demografía", "Book1.xlsx"), sheet = "
   mutate(sexo = factor(sexo, levels = c("Hombres", "Mujeres", "Ambos sexos")))
 
 ggplot(g4, aes(anio, value, color = sexo, group = sexo)) +
-  geom_line(size = 1.2) + 
+  geom_line(size = 1.5) + 
   scale_color_manual(values = c(violeta_cess, verde_cess, rosado_cess)) +
   scale_y_continuous(limits = c(60, 85),
                      expand = expansion(mult = c(0, 0))) +
@@ -162,7 +210,8 @@ ggplot(g5, aes(anio, value)) +
                      expand = expansion(mult = c(0, 0))) +
   scale_y_continuous(limits = c(-30000, 5000),
                      breaks = seq(-30000, 5000, by = 5000),
-                     expand = expansion(mult = c(0, .01))) +
+                     expand = expansion(mult = c(0, .01)),
+                     labels = function(x) format(x, big.mark = ".", scientific = FALSE)) +
   labs(x = "",
        y = "", 
        color = "",
@@ -193,7 +242,7 @@ g6 <- read_excel("Notas Técnicas/01_Población/insumos graficos Nota tecnica 
 evn_labels <- filter(g6, anio %in% c("2020-2025", "2095-2100"))
 
 ggplot(g6, aes(anio, valor, color = sexo, group = interaction(sexo, proyeccion))) +
-  geom_line(aes(linetype = proyeccion), size = 1.1) +
+  geom_line(aes(linetype = proyeccion), size = 1.5) +
   scale_color_manual(values = c(verde_cess, violeta_cess)) +
   scale_x_discrete(expand = expansion(mult = c(0.03, 0.06))) +
   scale_y_continuous(limits = c(40, 100),
@@ -342,3 +391,5 @@ ggplot(g10, aes(edad, value)) +
         legend.position = "bottom") +
   ggsave(here("Diagnóstico", "04_Demografía", "plots", "graf10.png"), 
          dpi = 300, width = 10, height = 6)
+
+
