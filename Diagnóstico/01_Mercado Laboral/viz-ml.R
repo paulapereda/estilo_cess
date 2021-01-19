@@ -6,9 +6,42 @@ library(here)
 
 source(here::here("estilo_cess.R"))
 
-# Gráfico - automatización
+# Gráfico - Informalidad Sectorial
 
-g <- read_excel(here("Diagnóstico", "01_Mercado Laboral", "SectoresAutoat.xlsx"))
+g <- read_excel(here("Diagnóstico", "01_Mercado Laboral", "Informalidad Sectorial.xlsx")) %>% 
+  pivot_longer(- formal, names_to = "sector", values_to = "valor") %>% 
+  mutate(sector = ifelse(sector == "Actividades de los hogares en calidad de empeladores", 
+                         "Actividades de los hogares en calidad de empleadores", sector),
+         sector = factor(sector, levels = c("Servicios sociales y relacionados con la Salud humana",
+                                            "Enseñanza",
+                                            "Industrias Manufactureras",
+                                            "Comercio",
+                                            "Alojamiento y servicios de comida",
+                                            "Producción agropecuaria",
+                                            "Construcción",
+                                            "Actividades de los hogares en calidad de empleadores"),
+                         labels = c("Servicios sociales \ny relacionados con \nla Salud humana",
+                                            "Enseñanza",
+                                            "Industrias \nManufactureras",
+                                            "Comercio",
+                                            "Alojamiento y \nservicios de \ncomida",
+                                            "Producción \nagropecuaria",
+                                            "Construcción",
+                                            "Actividades de los \nhogares en calidad\n de empleadores")))
+
+g %>% 
+ ggplot(aes(sector, valor, fill = formal)) + 
+  geom_bar(position = "fill", stat = "identity", width = .6) +
+  scale_fill_manual(values = c(verde_cess, rosado_cess)) +
+  scale_y_continuous(expand = expansion(mult = c(0, NA)),
+                     labels = scales::percent_format(accuracy = 1)) +
+  labs(x = "",
+       y = "",
+       fill = "",
+       title = "Estructura sectorial del empleo por formalidad/informalidad (2019)",
+       caption = "Fuente: elaboración propia en base a ECH") +
+  ggsave(here("Diagnóstico", "01_Mercado Laboral", "plots", "graf.png"), 
+         dpi = 300, width = 14, height = 8)
 
 # Gráfico 0 - Informalidad según sexo
 
