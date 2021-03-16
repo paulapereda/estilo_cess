@@ -26,7 +26,7 @@ g1 %>%
            x = 20.5, 
            y = 10500, 
            size = 5,
-           label = "Promedio: 19,2") +
+           label = "Promedio: 19,8") +
   labs(x = "Edad al inicio", 
        y = "Cantidad de cotizantes", 
        title = "Gráfico 1 - Edad de inicio laboral formal desde 2005",
@@ -54,7 +54,7 @@ g2 %>%
            y = 0.667,
            size = 5,
            label = "Promedio: 66,1%") +
-  labs(x = "Edad al 12/2019", 
+  labs(x = "Edad al 31/12/2019", 
        y = "Densidad de cotización", 
        title = "Gráfico 2 - Densidad promedio de cotizantes de 2019",
        caption = "Fuente: elaboración propia en base a datos de historia laboral de BPS") +
@@ -113,7 +113,7 @@ g4 %>%
                      breaks = seq(0.5, 0.8, by = 0.1),
                      labels = scales::percent_format(accuracy = 1),
                      expand = expansion(mult = c(0, 0))) + 
-  labs(x = "Edad al 12/2019", 
+  labs(x = "Edad al 31/12/2019", 
        y = "Densidad de cotización", 
        color = "",
        title = "Gráfico 4 - Densidad promedio de cotizantes de 2019 por edad y sexo",
@@ -135,7 +135,7 @@ g5 <- read_excel("Notas Técnicas/04_Densidad de cotización/Gráficas densidad.
 g5 %>% 
   ggplot(aes(Edad, densidad, color = quintil)) +
   geom_line(size = 1.1) +
-  scale_color_manual(values = c(verde_cess, violeta_cess, amarillo_cess, rosado_cess, violeta_cess2)) +
+  scale_color_manual(values = c(verde_cess, violeta_cess, amarillo_cess, rosado_cess, celeste_cess)) +
   scale_y_continuous(limits = c(0.3, 1),
                      breaks = seq(0.3, 1, by = 0.1),
                      labels = scales::percent_format(accuracy = 1),
@@ -188,7 +188,7 @@ g7 <- read_excel("Notas Técnicas/04_Densidad de cotización/Gráficas densidad.
 g7 %>% 
   ggplot(aes(Edad, densidad, color = densidad_desde)) +
   geom_line(size = 1.1) +
-  scale_color_manual(values = c(verde_cess, violeta_cess, amarillo_cess, rosado_cess, violeta_cess2)) +
+  scale_color_manual(values = c(verde_cess, violeta_cess, amarillo_cess, rosado_cess, celeste_cess)) +
   scale_y_continuous(limits = c(0.6, 1),
                      breaks = seq(0.6, 1, by = 0.1),
                      labels = scales::percent_format(accuracy = 1),
@@ -222,7 +222,7 @@ g8 <- read_excel("Notas Técnicas/04_Densidad de cotización/Gráficas densidad.
 g8 %>% 
   ggplot(aes(Edad, densidad, color = densidad_desde)) +
   geom_line(size = 1.1) +
-  scale_color_manual(values = c(verde_cess, violeta_cess, amarillo_cess, rosado_cess, violeta_cess2)) +
+  scale_color_manual(values = c(verde_cess, violeta_cess, amarillo_cess, rosado_cess, celeste_cess)) +
   facet_wrap(~ sexo) +
   scale_y_continuous(limits = c(0.5, 1),
                      breaks = seq(0.5, 1, by = 0.1),

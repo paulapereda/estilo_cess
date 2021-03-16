@@ -80,7 +80,7 @@ ggplot(g3, aes(anio, value_aux, color = tipo_pasividad, group = tipo_pasividad))
                                                     250000, 260000, 270000, 280000, 290000, 300000),
                                          labels = function(x) format(x, big.mark = ".", scientific = FALSE)),
                      expand = expansion(mult = c(.001, .1))) +
-  annotate("text", x = 2015, y = 390000, label = "+ 29%", size = 5.5) +
+  annotate("text", x = 2015, y = 387000, label = "+ 29%", size = 5.5) +
   labs(x = "",
        y = "", 
        color = "",

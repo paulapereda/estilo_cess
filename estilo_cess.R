@@ -14,7 +14,8 @@ violeta_cess2 <- "#CDBDDB"
 rosado_cess <- "#EC878D"
 verde_cess <- "#7FC371"
 verde_cess2 <- "#BEE1B7"
-gris_cess <- "#808285" 
+gris_cess <- "#808285"
+celeste_cess <- "#86abe0"
 
 estilo_cess <- function() {
   theme_minimal(base_family = "Gotham-Book",

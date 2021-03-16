@@ -30,8 +30,9 @@ g0 <- read_excel(here("Diagnóstico", "04_Demografía", "Piramides_1908_2100.xls
                                           "70-74",
                                           "75-79",
                                           "80+")))  
-
-ggplot(g0, aes(grupo, valor)) +
+g0 %>% 
+  filter(anio %in% c(1908, 1950, 2000, 2020)) %>% 
+  ggplot(aes(grupo, valor)) +
   geom_col(aes(fill = sexo)) +
   coord_flip() +
   scale_fill_manual(values = c(verde_cess, violeta_cess), 
